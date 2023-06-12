@@ -1,0 +1,22 @@
+development = false
+snowFlakeId = 1
+etcd = ["116.62.177.68:62379"]
+[mysql]
+addr = "116.62.177.68:3306"
+user = "root"
+password = "501124524"
+dbName = "only-id"
+maxConn = 20
+idleConn = 10
+idleTimeout = 14400000
+queryTimeout = 800
+execTimeout = 800
+[log]
+logFileDir = "logs"
+appName = "OnlyID"
+maxSize = 100
+maxBackups = 60
+maxAge = 30
+level  = "debug"
+[server]
+addr= "127.0.0.1:8082"
