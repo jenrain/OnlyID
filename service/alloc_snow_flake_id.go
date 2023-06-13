@@ -7,5 +7,5 @@ func (s *Service) NewAllocSnowFlakeId() (a *tool.Worker, err error) {
 }
 
 func (s *Service) SnowFlakeGetId() int64 {
-	return s.SnowFlakeGetId()
+	return s.snowFlake.GetId()
 }

@@ -2,8 +2,10 @@ package grpc
 
 import (
 	onlyIdSrv "OnlyID/api"
+	"OnlyID/library/log"
 	"context"
 	"errors"
+	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -13,7 +15,11 @@ func (s Server) GetId(ctx context.Context, in *onlyIdSrv.ReqId) (*onlyIdSrv.ResI
 	}
 	id, err := s.srv.GetId(in.GetBizTag())
 	if err != nil {
-		return nil, err
+		log.GetLogger().Error("get id failed", zap.Error(err))
+		if err.Error() == "biz_tag already exist" {
+			return &onlyIdSrv.ResId{Id: -1, Message: err.Error()}, nil
+		}
+		return &onlyIdSrv.ResId{Id: -1, Message: "service is unavailable"}, nil
 	}
 	return &onlyIdSrv.ResId{Id: id}, nil
 }

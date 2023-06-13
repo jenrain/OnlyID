@@ -1,0 +1,1 @@
+cmd/onlyId -conf cmd/only_id.toml
