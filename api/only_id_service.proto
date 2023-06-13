@@ -1,0 +1,17 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+package onlyIdSrv;
+option go_package = ".;onlyIdSrv";
+
+service OnlyId{
+  rpc GetId(ReqId)returns (ResId);
+  rpc GetSnowFlakeId(google.protobuf.Empty)returns (ResId);
+}
+
+message ReqId {
+  string  BizTag = 1;
+}
+
+message ResId{
+  int64  id = 2;
+}
