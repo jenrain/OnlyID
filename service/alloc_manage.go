@@ -33,7 +33,7 @@ type IdArray struct {
 func (s *Service) NewAllocId() (a *Alloc, err error) {
 	var res []entity.Segments
 	// 加载DB中的号段
-	if res, err = s.r.SegmentsGetAll(); err != nil {
+	if res, err = s.R.SegmentsGetAll(); err != nil {
 		return
 	}
 	a = &Alloc{
@@ -111,7 +111,7 @@ func (b *BizAlloc) GetIdArray(cancel context.CancelFunc, s *Service) {
 		// 再次检查号段是否只剩下一个
 		if len(b.IdArray) <= 1 {
 			b.Mu.Unlock()
-			ids, err = s.r.SegmentsIdNext(b.BizTag)
+			ids, err = s.R.SegmentsIdNext(b.BizTag)
 			if err != nil {
 				tryNum++
 			} else {

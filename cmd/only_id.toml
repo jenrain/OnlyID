@@ -1,16 +1,26 @@
 development = false
 snowFlakeId = 1
-etcd = ["ip:port"]
+etcd = ["127.0.0.1:2379"]
 [mysql]
-addr = "ip:port"
+addr = "127.0.0.1:3306"
 user = "user"
-password = "password"
+password = "123456"
 dbName = "only-id"
 maxConn = 20
 idleConn = 10
 idleTimeout = 14400000
 queryTimeout = 800
 execTimeout = 800
+[redis]
+addr = "127.0.0.1:6379"
+password = "123456"
+connTimeout = 5000
+readTimeout = 5000
+writeTimeout = 5000
+maxIdle = 5000
+idleTimeout = 5000
+maxActive = 5000
+maxConnLifetime = 5000
 [log]
 logFileDir = "logs"
 appName = "OnlyID"
@@ -20,3 +30,8 @@ maxAge = 30
 level  = "debug"
 [server]
 addr= "127.0.0.1:8082"
+
+# 0 数据库号段
+# 1 snowflake
+# 2 redis incr
+mode = 0

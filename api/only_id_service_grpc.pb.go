@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	OnlyId_GetId_FullMethodName          = "/onlyIdSrv.OnlyId/GetId"
 	OnlyId_GetSnowFlakeId_FullMethodName = "/onlyIdSrv.OnlyId/GetSnowFlakeId"
+	OnlyId_GetRedisId_FullMethodName     = "/onlyIdSrv.OnlyId/GetRedisId"
 )
 
 // OnlyIdClient is the client API for OnlyId service.
@@ -30,6 +31,7 @@ const (
 type OnlyIdClient interface {
 	GetId(ctx context.Context, in *ReqId, opts ...grpc.CallOption) (*ResId, error)
 	GetSnowFlakeId(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ResId, error)
+	GetRedisId(ctx context.Context, in *ReqId, opts ...grpc.CallOption) (*ResId, error)
 }
 
 type onlyIdClient struct {
@@ -58,12 +60,22 @@ func (c *onlyIdClient) GetSnowFlakeId(ctx context.Context, in *emptypb.Empty, op
 	return out, nil
 }
 
+func (c *onlyIdClient) GetRedisId(ctx context.Context, in *ReqId, opts ...grpc.CallOption) (*ResId, error) {
+	out := new(ResId)
+	err := c.cc.Invoke(ctx, OnlyId_GetRedisId_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OnlyIdServer is the server API for OnlyId service.
 // All implementations should embed UnimplementedOnlyIdServer
 // for forward compatibility
 type OnlyIdServer interface {
 	GetId(context.Context, *ReqId) (*ResId, error)
 	GetSnowFlakeId(context.Context, *emptypb.Empty) (*ResId, error)
+	GetRedisId(context.Context, *ReqId) (*ResId, error)
 }
 
 // UnimplementedOnlyIdServer should be embedded to have forward compatible implementations.
@@ -75,6 +87,9 @@ func (UnimplementedOnlyIdServer) GetId(context.Context, *ReqId) (*ResId, error) 
 }
 func (UnimplementedOnlyIdServer) GetSnowFlakeId(context.Context, *emptypb.Empty) (*ResId, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSnowFlakeId not implemented")
+}
+func (UnimplementedOnlyIdServer) GetRedisId(context.Context, *ReqId) (*ResId, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRedisId not implemented")
 }
 
 // UnsafeOnlyIdServer may be embedded to opt out of forward compatibility for this service.
@@ -124,6 +139,24 @@ func _OnlyId_GetSnowFlakeId_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OnlyId_GetRedisId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReqId)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OnlyIdServer).GetRedisId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OnlyId_GetRedisId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OnlyIdServer).GetRedisId(ctx, req.(*ReqId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OnlyId_ServiceDesc is the grpc.ServiceDesc for OnlyId service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -138,6 +171,10 @@ var OnlyId_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSnowFlakeId",
 			Handler:    _OnlyId_GetSnowFlakeId_Handler,
+		},
+		{
+			MethodName: "GetRedisId",
+			Handler:    _OnlyId_GetRedisId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

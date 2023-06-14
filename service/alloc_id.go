@@ -26,7 +26,7 @@ func (s *Service) GetId(tag string) (id int64, err error) {
 
 // CreateTag 创建号段
 func (s *Service) CreateTag(e *entity.Segments) error {
-	data, err := s.r.SegmentsCreate(e)
+	data, err := s.R.SegmentsCreate(e)
 	if err != nil {
 		return err
 	}

@@ -6,6 +6,7 @@ option go_package = ".;onlyIdSrv";
 service OnlyId{
   rpc GetId(ReqId)returns (ResId);
   rpc GetSnowFlakeId(google.protobuf.Empty)returns (ResId);
+  rpc GetRedisId(ReqId)returns (ResId);
 }
 
 message ReqId {
