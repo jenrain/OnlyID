@@ -1,12 +1,12 @@
 package main
 
 import (
-	"OnlyID/config"
-	"OnlyID/library/log"
-	"OnlyID/library/tool"
-	"OnlyID/server/grpc"
-	"OnlyID/service"
 	"flag"
+	"github.com/jenrain/OnlyID/config"
+	"github.com/jenrain/OnlyID/library/log"
+	"github.com/jenrain/OnlyID/library/tool"
+	"github.com/jenrain/OnlyID/server/grpc"
+	"github.com/jenrain/OnlyID/service"
 )
 
 func main() {

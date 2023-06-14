@@ -1,10 +1,10 @@
 package config
 
 import (
-	"OnlyID/library/database/mysql"
-	"OnlyID/library/log"
 	"flag"
 	"github.com/BurntSushi/toml"
+	"github.com/jenrain/OnlyID/library/database/mysql"
+	"github.com/jenrain/OnlyID/library/log"
 )
 
 var (

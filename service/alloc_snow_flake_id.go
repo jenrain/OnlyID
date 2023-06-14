@@ -1,6 +1,6 @@
 package service
 
-import "OnlyID/library/tool"
+import "github.com/jenrain/OnlyID/library/tool"
 
 func (s *Service) NewAllocSnowFlakeId() (a *tool.Worker, err error) {
 	return tool.NewWorker(s.c.SnowFlakeId)

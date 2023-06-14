@@ -1,8 +1,8 @@
 package tool
 
 import (
-	"OnlyID/library/log"
 	"context"
+	"github.com/jenrain/OnlyID/library/log"
 	"go.etcd.io/etcd/api/v3/mvccpb"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.uber.org/zap"

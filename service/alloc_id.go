@@ -1,7 +1,7 @@
 package service
 
 import (
-	"OnlyID/entity"
+	"github.com/jenrain/OnlyID/entity"
 )
 
 func (s *Service) GetId(tag string) (id int64, err error) {

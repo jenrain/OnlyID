@@ -1,10 +1,10 @@
 package grpc
 
 import (
-	onlyIdSrv "OnlyID/api"
-	"OnlyID/config"
-	"OnlyID/library/log"
-	"OnlyID/service"
+	onlyIdSrv "github.com/jenrain/OnlyID/api"
+	"github.com/jenrain/OnlyID/config"
+	"github.com/jenrain/OnlyID/library/log"
+	"github.com/jenrain/OnlyID/service"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"net"

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"OnlyID/entity"
 	"context"
 	"errors"
+	"github.com/jenrain/OnlyID/entity"
 	"sync"
 	"time"
 )

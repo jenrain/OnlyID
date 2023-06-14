@@ -1,10 +1,10 @@
 development = false
 snowFlakeId = 1
-etcd = ["116.62.177.68:62379"]
+etcd = ["ip:port"]
 [mysql]
-addr = "116.62.177.68:3306"
-user = "root"
-password = "501124524"
+addr = "ip:port"
+user = "user"
+password = "password"
 dbName = "only-id"
 maxConn = 20
 idleConn = 10

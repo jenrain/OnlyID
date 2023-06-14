@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"OnlyID/entity"
-	"OnlyID/library/log"
-	"OnlyID/library/tool"
+	"github.com/jenrain/OnlyID/entity"
+	"github.com/jenrain/OnlyID/library/log"
+	"github.com/jenrain/OnlyID/library/tool"
 	"go.uber.org/zap"
 )
 

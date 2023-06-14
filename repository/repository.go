@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"OnlyID/config"
-	"OnlyID/library/database/mysql"
-	"OnlyID/library/log"
+	"github.com/jenrain/OnlyID/config"
+	"github.com/jenrain/OnlyID/library/database/mysql"
+	"github.com/jenrain/OnlyID/library/log"
 	"gorm.io/gorm"
 )
 

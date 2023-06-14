@@ -1,8 +1,8 @@
 package mysql
 
 import (
-	"OnlyID/library/log"
 	"fmt"
+	"github.com/jenrain/OnlyID/library/log"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

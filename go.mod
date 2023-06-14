@@ -1,4 +1,4 @@
-module OnlyID
+module github.com/jenrain/OnlyID
 
 go 1.18
 

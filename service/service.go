@@ -1,10 +1,10 @@
 package service
 
 import (
-	"OnlyID/config"
-	"OnlyID/library/log"
-	"OnlyID/library/tool"
-	"OnlyID/repository"
+	"github.com/jenrain/OnlyID/config"
+	"github.com/jenrain/OnlyID/library/log"
+	"github.com/jenrain/OnlyID/library/tool"
+	"github.com/jenrain/OnlyID/repository"
 	"go.uber.org/zap"
 )
 
