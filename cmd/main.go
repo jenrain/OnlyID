@@ -17,7 +17,9 @@ func main() {
 	log.NewLogger(config.Conf.Log)
 	s := service.NewService(config.Conf)
 	grpc.Init(config.Conf, s)
-
+	if err := tool.InitMasterNode(config.Conf.Etcd, config.Conf.Server.Addr, 30); err != nil {
+		panic(err)
+	}
 	// 优雅关闭
 	tool.QuitSignal(func() {
 		s.Close()
