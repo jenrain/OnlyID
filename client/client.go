@@ -89,7 +89,7 @@ func (c *Client) getMasterNode() error {
 	return nil
 }
 
-func (c *Client) GetGidGrpcClient() (onlyIdSrv.OnlyIdClient, error) {
+func (c *Client) GetOnlyIdGrpcClient() (onlyIdSrv.OnlyIdClient, error) {
 	var err error
 	// 查看服务端ip是否发生变动
 	if c.change {
