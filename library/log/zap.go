@@ -6,7 +6,6 @@ import (
 	"go.uber.org/zap/zapcore"
 	"os"
 	"path/filepath"
-	"strings"
 	"sync"
 	"time"
 )
@@ -23,7 +22,8 @@ type Options struct {
 var (
 	l              *Logger
 	sp             = string(filepath.Separator)
-	outWrite       zapcore.WriteSyncer       // IO输出
+	infoWrite      zapcore.WriteSyncer       // info
+	errWrite       zapcore.WriteSyncer       // error
 	debugConsoleWS = zapcore.Lock(os.Stdout) // 控制台标准输出
 )
 
@@ -71,35 +71,10 @@ func (l *Logger) init() {
 	}
 	defer l.Logger.Sync()
 }
-func (l *Logger) GetLevel() (level zapcore.Level) {
-	switch strings.ToLower(l.Opts.Level) {
-	case "debug":
-		return zapcore.DebugLevel
-	case "info":
-		return zapcore.InfoLevel
-	case "warn":
-		return zapcore.WarnLevel
-	case "error":
-		return zapcore.ErrorLevel
-	case "dpanic":
-		return zapcore.DPanicLevel
-	case "panic":
-		return zapcore.PanicLevel
-	case "fatal":
-		return zapcore.FatalLevel
-	default:
-		return zapcore.DebugLevel //默认为调试模式
-	}
-}
 
 func (l *Logger) loadCfg() {
-	if l.GetLevel() == zapcore.DebugLevel {
-		l.zapConfig = zap.NewDevelopmentConfig()
-		l.zapConfig.EncoderConfig.EncodeTime = timeEncoder
-	} else {
-		l.zapConfig = zap.NewProductionConfig()
-		l.zapConfig.EncoderConfig.EncodeTime = timeUnixNano
-	}
+	l.zapConfig = zap.NewProductionConfig()
+	l.zapConfig.EncoderConfig.EncodeTime = timeEncoder
 	l.zapConfig.OutputPaths = []string{"stdout"}
 	l.zapConfig.OutputPaths = []string{"stderr"}
 	// 默认输出到程序运行目录的logs子目录
@@ -122,8 +97,17 @@ func (l *Logger) loadCfg() {
 }
 
 func (l *Logger) setSyncers() {
-	outWrite = zapcore.AddSync(&lumberjack.Logger{
-		Filename:   l.Opts.LogFileDir + sp + l.Opts.AppName + ".log",
+	infoWrite = zapcore.AddSync(&lumberjack.Logger{
+		Filename:   l.Opts.LogFileDir + sp + l.Opts.AppName + ".info.log",
+		MaxSize:    l.Opts.MaxSize,
+		MaxBackups: l.Opts.MaxBackups,
+		MaxAge:     l.Opts.MaxAge,
+		Compress:   true,
+		LocalTime:  true,
+	})
+
+	errWrite = zapcore.AddSync(&lumberjack.Logger{
+		Filename:   l.Opts.LogFileDir + sp + l.Opts.AppName + ".error.log",
 		MaxSize:    l.Opts.MaxSize,
 		MaxBackups: l.Opts.MaxBackups,
 		MaxAge:     l.Opts.MaxAge,
@@ -137,20 +121,21 @@ func (l *Logger) cores() zap.Option {
 	fileEncoder := zapcore.NewJSONEncoder(l.zapConfig.EncoderConfig)
 	encoderConfig := zap.NewDevelopmentEncoderConfig()
 	encoderConfig.EncodeTime = timeEncoder
-	consoleEncoder := zapcore.NewConsoleEncoder(encoderConfig)
-	priority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
-		return lvl >= l.GetLevel()
+	infoLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+		return lvl == zapcore.InfoLevel
+	})
+
+	errorLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+		return lvl >= zapcore.WarnLevel
 	})
 	var cores []zapcore.Core
-	if l.GetLevel() == zapcore.DebugLevel {
-		cores = append(cores, []zapcore.Core{
-			zapcore.NewCore(consoleEncoder, debugConsoleWS, priority),
-		}...)
-	} else {
-		cores = append(cores, []zapcore.Core{
-			zapcore.NewCore(fileEncoder, outWrite, priority),
-		}...)
-	}
+	cores = append(cores, []zapcore.Core{
+		zapcore.NewCore(fileEncoder, infoWrite, infoLevel),
+	}...)
+	cores = append(cores, []zapcore.Core{
+		zapcore.NewCore(fileEncoder, errWrite, errorLevel),
+	}...)
+
 	return zap.WrapCore(func(c zapcore.Core) zapcore.Core {
 		return zapcore.NewTee(cores...)
 	})

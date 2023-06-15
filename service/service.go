@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/jenrain/OnlyID/cache"
 	"github.com/jenrain/OnlyID/config"
 	"github.com/jenrain/OnlyID/library/log"
@@ -26,6 +27,7 @@ type Service struct {
 func NewService(c *config.Config) (s *Service) {
 	var err error
 	s = &Service{c: c}
+	fmt.Println("mode: ", c.Mode)
 	switch c.Mode {
 	case MYSQL:
 		s.R = repository.NewRepository(c)

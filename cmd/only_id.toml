@@ -1,9 +1,13 @@
+# 0 数据库号段
+# 1 snowflake
+# 2 redis incr
+mode = 2
 development = false
 snowFlakeId = 1
 etcd = ["127.0.0.1:2379"]
 [mysql]
 addr = "127.0.0.1:3306"
-user = "user"
+user = "root"
 password = "123456"
 dbName = "only-id"
 maxConn = 20
@@ -27,11 +31,6 @@ appName = "OnlyID"
 maxSize = 100
 maxBackups = 60
 maxAge = 30
-level  = "debug"
+level  = "info"
 [server]
 addr= "127.0.0.1:8082"
-
-# 0 数据库号段
-# 1 snowflake
-# 2 redis incr
-mode = 0

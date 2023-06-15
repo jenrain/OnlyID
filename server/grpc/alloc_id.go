@@ -10,6 +10,7 @@ import (
 )
 
 func (s Server) GetId(ctx context.Context, in *onlyIdSrv.ReqId) (*onlyIdSrv.ResId, error) {
+	//log.GetLogger().Info("received a request from the client || GetId", zap.Any("biz_tag", in.BizTag))
 	if s.srv.R == nil {
 		return &onlyIdSrv.ResId{Id: -1, Message: "service is unavailable"}, nil
 	}
@@ -28,6 +29,7 @@ func (s Server) GetId(ctx context.Context, in *onlyIdSrv.ReqId) (*onlyIdSrv.ResI
 }
 
 func (s Server) GetSnowFlakeId(ctx context.Context, empty *emptypb.Empty) (*onlyIdSrv.ResId, error) {
+	//log.GetLogger().Info("received a request from the client || GetSnowFlakeId")
 	if s.srv.SnowFlake == nil {
 		return &onlyIdSrv.ResId{Id: -1, Message: "service is unavailable"}, nil
 	}
@@ -37,6 +39,7 @@ func (s Server) GetSnowFlakeId(ctx context.Context, empty *emptypb.Empty) (*only
 }
 
 func (s Server) GetRedisId(ctx context.Context, in *onlyIdSrv.ReqId) (*onlyIdSrv.ResId, error) {
+	//log.GetLogger().Info("received a request from the client || GetRedisId", zap.Any("biz_tag", in.BizTag))
 	if s.srv.Cache == nil {
 		return &onlyIdSrv.ResId{Id: -1, Message: "service is unavailable"}, nil
 	}

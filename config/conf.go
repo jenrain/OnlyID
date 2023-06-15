@@ -14,6 +14,7 @@ var (
 )
 
 type Config struct {
+	Mode        int
 	Development bool
 	SnowFlakeId int64
 	Etcd        []string
@@ -21,7 +22,6 @@ type Config struct {
 	Mysql       *mysql.Config
 	Redis       *cache.RedisClientOption
 	Server      *Srv
-	Mode        int
 }
 
 type Srv struct {
