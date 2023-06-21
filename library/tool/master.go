@@ -60,7 +60,6 @@ func (m *master) leaseTTL() {
 			}
 		}
 	}()
-
 }
 
 // 监听到key被删除了，尝试去抢锁成为主

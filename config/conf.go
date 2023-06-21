@@ -26,6 +26,7 @@ type Config struct {
 
 type Srv struct {
 	Addr string
+	Port string
 }
 
 func init() {

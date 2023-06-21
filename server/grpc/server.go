@@ -15,7 +15,8 @@ type Server struct {
 }
 
 func Init(c *config.Config, s *service.Service) {
-	listen, err := net.Listen("tcp", c.Server.Addr)
+	//listen, err := net.Listen("tcp", c.Server.Addr+":"+c.Server.Port)
+	listen, err := net.Listen("tcp", "0.0.0.0:8082")
 	if err != nil {
 		panic(err)
 	}

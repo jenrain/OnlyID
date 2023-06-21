@@ -2,12 +2,22 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/jenrain/OnlyID/config"
+	"github.com/jenrain/OnlyID/library/ip"
 	"github.com/jenrain/OnlyID/library/log"
 	"github.com/jenrain/OnlyID/library/tool"
 	"github.com/jenrain/OnlyID/server/grpc"
 	"github.com/jenrain/OnlyID/service"
 )
+
+// local ip add
+var ipAddr string
+
+func init() {
+	ipAddr = ip.GetIpAddr()
+	fmt.Println("local ip addr: ", ipAddr)
+}
 
 func main() {
 	flag.Parse()
@@ -17,7 +27,7 @@ func main() {
 	log.NewLogger(config.Conf.Log)
 	s := service.NewService(config.Conf)
 	grpc.Init(config.Conf, s)
-	if err := tool.InitMasterNode(config.Conf.Etcd, config.Conf.Server.Addr, 30); err != nil {
+	if err := tool.InitMasterNode(config.Conf.Etcd, ipAddr+":"+config.Conf.Server.Port, 30); err != nil {
 		panic(err)
 	}
 	// 优雅关闭
