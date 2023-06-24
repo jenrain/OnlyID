@@ -11,7 +11,7 @@ onlyId是一个分布式id生成器，用户可以根据业务需要基于数据
 - 数据库号段算法采用预分配机制，分配id只访问内存
 - 基于etcd lease实现自动抢主，主节点挂掉从节点自动申请为主节点
 - GRPC对外提供服务
-- 高性能，qps可达百万级
+- 高性能，单机qps可达十万级
 
 ## 安装部署
 
@@ -93,7 +93,100 @@ func main() {
 
 ## 压测
 
-TODO
+### 环境
+
+| Parameter  | Value                             |
+|------------|-----------------------------------|
+| Go version | 1.20                              |
+| Machine    | 腾讯云CVM 计算型C6                      |
+| System     | Centos 7.6                        |
+| CPU        | Intel Ice Lake(3.2GHz/3.5Ghz) 16核 |
+| Memory     | 32 GB                             |
+
+### ghz压测grpc接口
+
+**GetId**
+```
+Summary:
+  Count:        2677242
+  Total:        20.00 s
+  Slowest:      12.84 ms
+  Fastest:      0.06 ms
+  Average:      1.18 ms
+  Requests/sec: 133854.88
+```
+
+**GetSnowFlakeId**
+```
+Summary:
+  Count:        3021127
+  Total:        20.00 s
+  Slowest:      10.80 ms
+  Fastest:      0.05 ms
+  Average:      0.99 ms
+  Requests/sec: 151052.31
+```
+
+**GetRedisId**
+```
+Summary:
+  Count:        2276938
+  Total:        20.00 s
+  Slowest:      1.01 s
+  Fastest:      0.09 ms
+  Average:      1.49 ms
+  Requests/sec: 113841.71
+```
+
+### wrk压测http接口
+
+**getId**
+```
+  8 threads and 200 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   103.28ms  136.97ms 560.60ms   79.19%
+    Req/Sec     3.56k     3.45k   23.74k    83.42%
+  Latency Distribution
+     50%    3.67ms
+     75%  203.58ms
+     90%  336.79ms
+     99%  427.25ms
+  586778 requests in 30.03s, 76.66MB read
+Requests/sec:  19542.88
+Transfer/sec:      2.55MB
+```
+
+**getSnowFlakeId**
+```
+  8 threads and 200 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   105.31ms  140.31ms 614.58ms   79.69%
+    Req/Sec     3.25k     2.93k   22.98k    85.60%
+  Latency Distribution
+     50%    3.65ms
+     75%  204.15ms
+     90%  341.56ms
+     99%  460.46ms
+  588146 requests in 30.04s, 83.01MB read
+Requests/sec:  19580.94
+Transfer/sec:      2.76MB
+```
+
+**getRedisId**
+```
+  8 threads and 200 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   104.76ms  143.57ms   1.46s    80.45%
+    Req/Sec     3.31k     2.86k   18.94k    77.13%
+  Latency Distribution
+     50%    3.61ms
+     75%  200.63ms
+     90%  335.55ms
+     99%  486.03ms
+  569566 requests in 30.03s, 73.77MB read
+Requests/sec:  18969.31
+Transfer/sec:      2.46MB
+```
 
 ## 参考
 
