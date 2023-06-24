@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/jenrain/OnlyID/config"
+	"github.com/jenrain/OnlyID/library/http"
 	"github.com/jenrain/OnlyID/library/ip"
 	"github.com/jenrain/OnlyID/library/log"
 	"github.com/jenrain/OnlyID/library/tool"
@@ -30,6 +32,10 @@ func main() {
 	if err := tool.InitMasterNode(config.Conf.Etcd, ipAddr+":"+config.Conf.Server.Port, 30); err != nil {
 		panic(err)
 	}
+	// http服务 测试用
+	r := gin.Default()
+	http.InitRouter(r)
+	r.Run(":8083")
 	// 优雅关闭
 	tool.QuitSignal(func() {
 		s.Close()
