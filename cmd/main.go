@@ -29,7 +29,7 @@ func main() {
 	log.NewLogger(config.Conf.Log)
 	s := service.NewService(config.Conf)
 	grpc.Init(config.Conf, s)
-	if err := tool.InitMasterNode(config.Conf.Etcd, ipAddr+":"+config.Conf.Server.Port, 30); err != nil {
+	if err := tool.InitMasterNode(config.Conf.Etcd, ipAddr+":"+config.Conf.Server.Port, 5); err != nil {
 		panic(err)
 	}
 	// http服务 测试用

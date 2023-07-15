@@ -51,7 +51,7 @@ func (m *master) leaseTTL() {
 	// 监听key兜底
 	m.watch()
 	// 定时续约
-	ticker := time.NewTicker(time.Duration(m.ttl) * time.Second)
+	ticker := time.NewTicker(time.Duration(m.ttl/2) * time.Second)
 	go func() {
 		for {
 			select {
